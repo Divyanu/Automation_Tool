@@ -16,5 +16,14 @@ module.exports = {
   keywordditSuggestTimeoutMs: 15000,
   keywordditResultsTimeoutMs: 60000,
   keywordditRetryCount: 2,
-  keywordditKeyDelayMs: 100
+  keywordditKeyDelayMs: 100,
+  redditTopPostsLimit: 40,
+  redditCommentsPerPostLimit: 30,
+  redditPostScoreThreshold: 20,
+  redditCommentScoreThreshold: 5,
+  redditMinCommentWords: 5,
+  redditDelayMsMin: 400,
+  redditDelayMsMax: 1200,
+  redditMaxPhrasesPerSubreddit: 40,
+  redditIncludeHotPosts: true
 };

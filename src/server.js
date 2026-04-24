@@ -5,6 +5,7 @@ const config = require("./config");
 const { parseSubredditEntries, parseSubredditLines } = require("./parser");
 const { runPipeline } = require("./pipeline");
 const { buildSubredditMapFromKeyworddit } = require("./keyworddit");
+const { buildScrapedKeywordsForSubreddits, merge_keywords } = require("./reddit-live");
 
 const HOST = "127.0.0.1";
 const BASE_PORT = Number.parseInt(process.env.PORT || "8787", 10);
@@ -85,18 +86,32 @@ const server = http.createServer(async (req, res) => {
           config
         );
 
-        if (!subredditMap || Object.keys(subredditMap).length === 0) {
+        // Run Reddit live extraction only for subreddits that Keyworddit failed to populate.
+        const redditLiveTargets = failed_subreddits || [];
+        const redditLive = await buildScrapedKeywordsForSubreddits(redditLiveTargets, config);
+        const { mergedInventory, subredditMap: mergedSubredditMap } = merge_keywords(
+          keyworddit_rows,
+          redditLive.data,
+          config.maxKeywordsPerSubreddit
+        );
+
+        const allFailed = [...new Set([...(failed_subreddits || []), ...(redditLive.failed || [])])];
+
+        if (!mergedSubredditMap || Object.keys(mergedSubredditMap).length === 0) {
           sendJson(res, 400, {
             error:
-              "No Keyworddit keywords for any subreddit. Check spelling, subreddit size (Keyworddit needs suggestions), or try again.",
-            failedSubreddits: failed_subreddits
+              "No usable keywords from Keyworddit or Reddit live extraction. Check subreddit spelling, size, or Reddit API credentials.",
+            failedSubreddits: allFailed,
+            redditLiveErrors: redditLive.errors || []
           });
           return;
         }
 
-        const result = await runPipeline(subredditMap, {
-          failed_subreddits,
-          keyworddit_rows
+        const result = await runPipeline(mergedSubredditMap, {
+          failed_subreddits: allFailed,
+          keyworddit_rows,
+          merged_keyword_inventory: mergedInventory,
+          reddit_live_errors: redditLive.errors || []
         });
         sendJson(res, 200, result);
         return;

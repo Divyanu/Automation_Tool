@@ -20,6 +20,10 @@ async function runPipeline(subredditMap, meta = {}) {
 
   const failedSubreddits = Array.isArray(meta.failed_subreddits) ? meta.failed_subreddits : [];
   const keywordditRows = Array.isArray(meta.keyworddit_rows) ? meta.keyworddit_rows : [];
+  const mergedKeywordInventory = Array.isArray(meta.merged_keyword_inventory)
+    ? meta.merged_keyword_inventory
+    : [];
+  const redditLiveErrors = Array.isArray(meta.reddit_live_errors) ? meta.reddit_live_errors : [];
 
   const rawRows = await scrapePemavor(subredditMap, config);
   const scoredRows = addKeywordScores(rawRows);
@@ -41,6 +45,8 @@ async function runPipeline(subredditMap, meta = {}) {
     all_rows: filteredRows,
     failed_subreddits: failedSubreddits,
     keyworddit_rows: keywordditRows,
+    merged_keyword_inventory: mergedKeywordInventory,
+    reddit_live_errors: redditLiveErrors,
     insights: {
       patterns,
       ad_angles: adAngles,
@@ -58,6 +64,8 @@ async function runPipeline(subredditMap, meta = {}) {
     hiddenOpportunities,
     failedSubreddits,
     keywordditRows,
+    mergedKeywordInventory,
+    redditLiveErrors,
     outputJsonPath: config.outputJsonPath,
     outputCsvPath: config.outputCsvPath,
     selectors: SELECTOR_HINTS

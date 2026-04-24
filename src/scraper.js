@@ -101,7 +101,9 @@ async function runChunkSearch(page, subreddit, keywordChunk) {
           ? parseNumber(item.total_comments) / parseNumber(item.total_posts)
           : 0);
       return {
-        subreddit: item.subreddit ? `r/${String(item.subreddit).replace(/^r\//i, "")}` : subreddit,
+        // Preserve source subreddit context from our own pipeline.
+        // Pemavor may return broad/global labels like r/all in keyword-only mode.
+        subreddit,
         keyword: String(item.keyword || "").trim(),
         posts_per_day: posts,
         comments_per_day: comments,
