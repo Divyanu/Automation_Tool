@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reddit Ads Intelligence UI</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>Reddit Ads Intelligence Tool</h1>
+      <p class="sub">
+        Use Keyworddit to pull keywords from subreddit names, then score trends via Pemavor. Or enter keywords manually.
+      </p>
+
+      <section class="panel panel-mode">
+        <h2>Input mode</h2>
+        <div class="mode-row">
+          <label class="mode-option">
+            <input type="radio" name="input-mode" value="keyworddit" checked />
+            <span>
+              <strong>Subreddits only</strong>
+              <small>Keyworddit → Pemavor (auto keyword discovery)</small>
+            </span>
+          </label>
+          <label class="mode-option">
+            <input type="radio" name="input-mode" value="manual" />
+            <span>
+              <strong>Manual keywords</strong>
+              <small>Enter keywords yourself for each subreddit</small>
+            </span>
+          </label>
+        </div>
+      </section>
+
+      <section class="panel" id="keyworddit-panel">
+        <h2>Subreddits</h2>
+        <p class="hint">One per line, with or without <code>r/</code>. Keyworddit must show autocomplete for the name.</p>
+        <label for="subreddit-lines">Subreddit list</label>
+        <textarea
+          id="subreddit-lines"
+          rows="8"
+          placeholder="autodetailing&#10;jeep"
+        ></textarea>
+        <div class="actions-row">
+          <button id="run-btn" type="button" class="primary">Run analysis</button>
+          <p id="status" class="status-text"></p>
+        </div>
+      </section>
+
+      <section class="panel hidden" id="manual-panel">
+        <div class="row between">
+          <h2>Manual inputs</h2>
+          <button id="add-subreddit" type="button">+ Add subreddit</button>
+        </div>
+        <div id="subreddit-list"></div>
+        <div class="actions-row">
+          <button id="run-manual-btn" type="button" class="primary">Run analysis</button>
+          <p id="manual-status" class="status-text"></p>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Top subreddits</h2>
+        <div id="top-subreddits"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Top keywords</h2>
+        <div id="top-keywords"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Skipped subreddits (no data found)</h2>
+        <div id="skipped-subreddits">
+          <p class="muted">None yet — run an analysis.</p>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Output files</h2>
+        <div id="output-files">
+          <p class="muted">Run analysis to generate downloadable files.</p>
+        </div>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

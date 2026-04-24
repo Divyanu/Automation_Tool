@@ -1,0 +1,22 @@
+{
+  "name": "reddit-ads-intelligence-tool",
+  "version": "1.0.0",
+  "description": "Automates Pemavor Reddit Trends scraping, scoring, and ranking.",
+  "main": "src/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/index.js",
+    "check": "node --check src/index.js",
+    "ui": "node src/server.js"
+  },
+  "keywords": [
+    "reddit",
+    "ads",
+    "playwright",
+    "growth"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "playwright": "^1.59.1"
+  }
+}
